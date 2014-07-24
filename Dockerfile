@@ -17,15 +17,8 @@ RUN ln -nsf /proc/self/mounts /etc/mtab
 RUN apt-get -y install iptables
 
 # Install Chef
-RUN apt-get -y install curl build-essential libxml2-dev libxslt-dev git libgecode-dev
-RUN curl -L https://www.opscode.com/chef/install.sh | bash
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install chef ruby gem ruby-dep-selector curl build-essential libxml2-dev libxslt-dev git
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
-
-# Add the embedded chef bin to PATH
-ENV PATH $PATH:/opt/chef/embedded/bin
-
-ENV USE_SYSTEM_GECODE 1
-RUN /opt/chef/embedded/bin/gem install dep-selector-libgecode
 
 # Add latest default chef-solo config files
 ADD ./solo.rb /etc/chef/solo.rb
@@ -40,12 +33,12 @@ ADD ./Berksfile /Berksfile
 ADD ./Berksfile.lock /Berksfile.lock
 
 # Install Berkshelf with chef's own ruby
-RUN /opt/chef/embedded/bin/gem install bundler
-RUN /opt/chef/embedded/bin/bundle install --binstubs
-RUN /opt/chef/embedded/bin/bundle exec berks install
+RUN gem install bundler
+RUN bundle install --binstubs
+RUN bundle exec berks install
 
 # Run cookbooks
-RUN /opt/chef/embedded/bin/bundle exec chef-solo || cat /etc/chef/chef-stacktrace.out ; true
+RUN bundle exec chef-solo
 
 # Add supervisord services
 ADD ./supervisor /etc/supervisor
