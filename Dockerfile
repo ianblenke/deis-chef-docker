@@ -17,12 +17,15 @@ RUN ln -nsf /proc/self/mounts /etc/mtab
 RUN apt-get -y install iptables
 
 # Install Chef
-RUN apt-get -y install curl build-essential libxml2-dev libxslt-dev git
+RUN apt-get -y install curl build-essential libxml2-dev libxslt-dev git libgecode-dev
 RUN curl -L https://www.opscode.com/chef/install.sh | bash
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 
 # Add the embedded chef bin to PATH
 ENV PATH $PATH:/opt/chef/embedded/bin
+
+ENV USE_SYSTEM_GECODE=1
+RUN /opt/chef/embedded/bin/gem install dep-selector-libgecode
 
 # Add latest default chef-solo config files
 ADD ./solo.rb /etc/chef/solo.rb
