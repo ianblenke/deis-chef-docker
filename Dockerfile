@@ -25,13 +25,18 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 ADD ./solo.rb /etc/chef/solo.rb
 ADD ./node.json /etc/chef/node.json
 
+# Add Gemfile to install gems
+ADD ./Gemfile /Gemfile
+ADD ./Gemfile.lock /Gemfile.lock
+
 # Add Berksfile to install cookbooks
 ADD ./Berksfile /Berksfile
+ADD ./Berksfile.lock /Berksfile.lock
 
 # Install Berkshelf with chef's own ruby
-RUN /opt/chef/embedded/bin/gem install berkshelf
-
-RUN berks install
+RUN /opt/chef/embedded/bin/gem install bundler
+RUN /opt/chef/embedded/bin/bundle install
+RUN /opt/chef/embedded/bin/bundle exec berks install
 
 # Run cookbooks
 RUN chef-solo
