@@ -10,14 +10,11 @@ RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:pitti/systemd
 RUN apt-get -y update
 
-RUN apt-get -y install systemd
+RUN apt-get -y install systemd iptables
 RUN ln -nsf /proc/self/mounts /etc/mtab
 
-# Fail2ban really wants iptables
-RUN apt-get -y install iptables
-
 # Install Chef
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install chef ruby gem ruby-dep-selector curl build-essential libxml2-dev libxslt-dev git
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install bundler chef ruby gem ruby-dep-selector curl build-essential libxml2-dev libxslt-dev git
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 
 # Add latest default chef-solo config files
@@ -33,7 +30,6 @@ ADD ./Berksfile /Berksfile
 ADD ./Berksfile.lock /Berksfile.lock
 
 # Install Berkshelf with chef's own ruby
-RUN gem install bundler
 RUN bundle install --binstubs
 RUN bundle exec berks install
 
