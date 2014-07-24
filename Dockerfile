@@ -35,7 +35,8 @@ ADD ./Berksfile.lock /Berksfile.lock
 
 # Install Berkshelf with chef's own ruby
 RUN /opt/chef/embedded/bin/gem install bundler
-RUN /opt/chef/embedded/bin/bundle install
+RUN /opt/chef/embedded/bin/bundle install --binstubs
+RUN ls -la /bin /opt/chef/embedded/bin | grep berks || true
 RUN /opt/chef/embedded/bin/bundle exec berks install
 
 # Run cookbooks
