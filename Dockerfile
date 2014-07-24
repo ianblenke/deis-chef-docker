@@ -24,7 +24,7 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 # Add the embedded chef bin to PATH
 ENV PATH $PATH:/opt/chef/embedded/bin
 
-ENV USE_SYSTEM_GECODE=1
+ENV USE_SYSTEM_GECODE 1
 RUN /opt/chef/embedded/bin/gem install dep-selector-libgecode
 
 # Add latest default chef-solo config files
