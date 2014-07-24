@@ -42,7 +42,7 @@ RUN /opt/chef/embedded/bin/bundle install --binstubs
 RUN /opt/chef/embedded/bin/bundle exec berks install
 
 # Run cookbooks
-RUN chef-solo
+RUN chef-solo || cat /etc/chef/chef-stacktrace.out ; false
 
 # Add supervisord services
 ADD ./supervisor /etc/supervisor
