@@ -14,7 +14,7 @@ RUN apt-get -y install systemd iptables
 RUN ln -nsf /proc/self/mounts /etc/mtab
 
 # Install Chef
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install bundler chef ruby ruby-dev gem ruby-dep-selector curl build-essential libxml2-dev libxslt-dev git && apt-get clean
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install bundler chef ruby gem ruby-dep-selector curl build-essential libxml2-dev libxslt-dev git && apt-get clean
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 
 # Add latest default chef-solo config files
@@ -29,7 +29,8 @@ ADD ./Gemfile.lock /Gemfile.lock
 ADD ./Berksfile /Berksfile
 ADD ./Berksfile.lock /Berksfile.lock
 
-# Install Berkshelf with chef's own ruby
+# Install Berkshelf
+ENV BERKSHELF_PATH /etc/chef
 RUN bundle install --binstubs
 RUN bundle exec berks install
 
