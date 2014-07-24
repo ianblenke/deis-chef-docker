@@ -21,6 +21,9 @@ RUN apt-get -y install curl build-essential libxml2-dev libxslt-dev git
 RUN curl -L https://www.opscode.com/chef/install.sh | bash
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 
+# Add the embedded chef bin to PATH
+ENV PATH $PATH:/opt/chef/embedded/bin
+
 # Add latest default chef-solo config files
 ADD ./solo.rb /etc/chef/solo.rb
 ADD ./node.json /etc/chef/node.json
@@ -36,7 +39,6 @@ ADD ./Berksfile.lock /Berksfile.lock
 # Install Berkshelf with chef's own ruby
 RUN /opt/chef/embedded/bin/gem install bundler
 RUN /opt/chef/embedded/bin/bundle install --binstubs
-RUN ls -la /bin /opt/chef/embedded/bin | grep berks || true
 RUN /opt/chef/embedded/bin/bundle exec berks install
 
 # Run cookbooks
