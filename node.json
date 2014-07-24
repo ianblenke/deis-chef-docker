@@ -1,0 +1,9 @@
+{
+  "run_list": [ "recipe[fail2ban]","recipe[supervisord]" ],
+  "fail2ban": {
+    "backend": "systemd",
+    "services": {
+      "ssh": { "enabled": "true", "port": "ssh", "filter": "sshd", "maxretry": "6" }
+    }
+  }
+}
