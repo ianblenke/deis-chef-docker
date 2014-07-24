@@ -36,7 +36,7 @@ RUN bundle exec berks install --debug
 RUN ls -la /etc/chef /etc/chef/cookbooks /.berkshelf /cookbooks || true
 
 # Run cookbooks
-RUN bundle exec chef-solo --verbose
+RUN bundle exec chef-solo
 
 # Add supervisord services
 ADD ./supervisor /etc/supervisor
