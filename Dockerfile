@@ -32,10 +32,11 @@ ADD ./Berksfile.lock /Berksfile.lock
 # Install Berkshelf
 ENV BERKSHELF_PATH /etc/chef
 RUN bundle install --binstubs
-RUN bundle exec berks install
+RUN bundle exec berks install --debug
+RUN ls -la /etc/chef /etc/chef/cookbooks /.berkshelf /cookbooks || true
 
 # Run cookbooks
-RUN bundle exec chef-solo
+RUN bundle exec chef-solo --verbose
 
 # Add supervisord services
 ADD ./supervisor /etc/supervisor
