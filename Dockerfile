@@ -5,7 +5,7 @@ MAINTAINER Ian Blenke "ian@blenke.com"
 ENV LANG C.UTF-8
 
 # Add systemd
-RUN apt-get install -y software-properties-common python-software-properties
+RUN apt-get install -y software-properties-common 
 RUN add-apt-repository ppa:pitti/systemd
 
 RUN apt-get -y update
