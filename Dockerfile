@@ -21,6 +21,7 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 RUN mkdir -p /etc/chef/cache
 ADD ./solo.rb /etc/chef/solo.rb
 ADD ./node.json /etc/chef/node.json
+ADD ./chef-solo.tar.gz /etc/chef/chef-solo.tar.gz
 
 # Add Gemfile to install gems
 ADD ./Gemfile /Gemfile
@@ -34,10 +35,11 @@ ADD ./Berksfile.lock /Berksfile.lock
 ENV BERKSHELF_PATH /etc/chef
 RUN bundle install --binstubs
 RUN bundle exec berks install --debug
+RUN bundle exec berks vendor
 RUN ls -la /etc/chef /etc/chef/cookbooks /.berkshelf /cookbooks || true
 
 # Run cookbooks
-RUN bundle exec chef-solo
+RUN bundle exec chef-solo -c /etc/chef/solo.rb -j /etc/chef/node.json -r /etc/chef/chef-solo.tar.gz
 
 # Add supervisord services
 ADD ./supervisor /etc/supervisor
