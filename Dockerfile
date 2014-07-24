@@ -31,6 +31,8 @@ ADD ./Berksfile /Berksfile
 # Install Berkshelf with chef's own ruby
 RUN /opt/chef/embedded/bin/gem install berkshelf
 
+RUN berks install
+
 # Run cookbooks
 RUN chef-solo
 
