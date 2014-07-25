@@ -35,8 +35,8 @@ ADD ./Berksfile.lock /Berksfile.lock
 ENV BERKSHELF_PATH /etc/chef
 RUN bundle install --binstubs
 RUN bundle exec berks install --debug
-RUN bundle exec berks vendor
-RUN ls -la /etc/chef /etc/chef/cookbooks /.berkshelf /cookbooks || true
+RUN bundle exec berks vendor -d
+RUN ls -la / /etc/chef /etc/chef/cookbooks /.berkshelf /cookbooks || true
 
 # Run cookbooks
 RUN bundle exec chef-solo -c /etc/chef/solo.rb -j /etc/chef/node.json -r /etc/chef/chef-solo.tar.gz
