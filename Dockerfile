@@ -18,26 +18,16 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install bundler chef ruby gem ruby
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 
 # Add latest default chef-solo config files
+ADD ./chef-solo.tar.gz /etc/chef
 RUN mkdir -p /etc/chef/cache /etc/chef/roles /etc/chef/environments /etc/chef/data_bags /etc/chef/backup
 ADD ./solo.rb /etc/chef/solo.rb
 ADD ./node.json /etc/chef/node.json
-ADD ./chef-solo.tar.gz /etc/chef/chef-solo.tar.gz
-RUN tar xvf /etc/chef/chef-solo.tar.gz -C /etc/chef
 
 # Add Gemfile to install gems
 ADD ./Gemfile /Gemfile
 ADD ./Gemfile.lock /Gemfile.lock
 
-# Add Berksfile to install cookbooks
-ADD ./Berksfile /Berksfile
-ADD ./Berksfile.lock /Berksfile.lock
-
-# Install Berkshelf
-ENV BERKSHELF_PATH /etc/chef
 RUN bundle install --binstubs
-RUN echo BERKSHELF_PATH=$BERKSHELF_PATH
-RUN bundle exec berks vendor /etc/chef/cookbooks -d
-RUN ls -la / /etc/chef /etc/chef/cookbooks /.berkshelf /cookbooks || true
 
 # Run cookbooks
 RUN bundle exec chef-solo -c /etc/chef/solo.rb -j /etc/chef/node.json
