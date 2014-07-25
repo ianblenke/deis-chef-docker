@@ -34,7 +34,6 @@ ADD ./Berksfile.lock /Berksfile.lock
 # Install Berkshelf
 ENV BERKSHELF_PATH /etc/chef
 RUN bundle install --binstubs
-RUN mkdir -p /etc/chef/cookbooks
 RUN echo BERKSHELF_PATH=$BERKSHELF_PATH
 RUN bundle exec berks vendor /etc/chef/cookbooks -d
 RUN ls -la / /etc/chef /etc/chef/cookbooks /.berkshelf /cookbooks || true
