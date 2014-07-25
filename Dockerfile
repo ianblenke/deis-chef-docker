@@ -18,7 +18,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install bundler chef ruby gem ruby
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 
 # Add latest default chef-solo config files
-RUN mkdir -p /etc/chef/cache
+RUN mkdir -p /etc/chef/cache /etc/chef/roles /etc/chef/environments /etc/chef/data_bags /etc/chef/backup
 ADD ./solo.rb /etc/chef/solo.rb
 ADD ./node.json /etc/chef/node.json
 ADD ./chef-solo.tar.gz /etc/chef/chef-solo.tar.gz
