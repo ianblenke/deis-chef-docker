@@ -21,6 +21,8 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 RUN mkdir -p /etc/chef/cache /etc/chef/roles /etc/chef/environments /etc/chef/data_bags /etc/chef/backup
 ADD ./solo.rb /etc/chef/solo.rb
 ADD ./node.json /etc/chef/node.json
+ADD ./chef-solo.tar.gz /etc/chef/chef-solo.tar.gz
+RUN tar xvf /etc/chef/chef-solo.tar.gz -C /etc/chef
 
 # Add Gemfile to install gems
 ADD ./Gemfile /Gemfile
