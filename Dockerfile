@@ -39,7 +39,7 @@ RUN bundle exec berks vendor /etc/chef/cookbooks -d
 RUN ls -la / /etc/chef /etc/chef/cookbooks /.berkshelf /cookbooks || true
 
 # Run cookbooks
-RUN bundle exec chef-solo -c /etc/chef/solo.rb -j /etc/chef/node.json -r /etc/chef/chef-solo.tar.gz
+RUN bundle exec chef-solo -c /etc/chef/solo.rb -j /etc/chef/node.json -r file:///etc/chef/chef-solo.tar.gz
 
 # Add supervisord services
 ADD ./supervisor /etc/supervisor
